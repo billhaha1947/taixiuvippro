@@ -1,5 +1,5 @@
 // ============================================
-// App.jsx - MAIN APPLICATION
+// App.jsx - MAIN APPLICATION (FIXED)
 // ============================================
 import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
@@ -20,7 +20,7 @@ import BetHistoryModal from './components/History/BetHistoryModal';
 import AdminPanel from './components/Admin/AdminPanel';
 
 function App() {
-  const { user, login, register, updateUser, isAuthenticated } = useAuth();
+  const { user, loading, login, register, updateUser, isAuthenticated } = useAuth();
   const { connected } = useWebSocket();
   const { muted, toggleMute } = useSound();
   const {
@@ -37,16 +37,18 @@ function App() {
   } = useGame();
 
   const [showChat, setShowChat] = useState(false);
-  const [showAuth, setShowAuth] = useState(!isAuthenticated);
+  const [showAuth, setShowAuth] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
 
-  // Listen for user coin updates
+  // Update showAuth based on authentication status
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!loading && !isAuthenticated) {
       setShowAuth(true);
+    } else if (isAuthenticated) {
+      setShowAuth(false);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, loading]);
 
   const handleLogin = async (username, password) => {
     try {
@@ -93,8 +95,20 @@ function App() {
     toast.success('Đã chọn tất cả xu!');
   };
 
+  // Show loading spinner while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-casino-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-dragon-red border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-dragon-gold font-display text-xl">Đang tải...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Show auth modal if not authenticated
-  if (showAuth) {
+  if (showAuth || !isAuthenticated) {
     return (
       <>
         <div className="min-h-screen bg-casino-black flex items-center justify-center">
@@ -125,7 +139,7 @@ function App() {
 
       {/* Connection status */}
       {!connected && (
-        <div className="fixed top-20 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+        <div className="fixed top-20 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-pulse">
           ⚠️ Mất kết nối server
         </div>
       )}
