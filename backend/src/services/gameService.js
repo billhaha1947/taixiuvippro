@@ -32,10 +32,10 @@ class GameService {
       xiu: { count: 0, amount: 0 }
     };
 
-    // Create new round in database
+    // Create new round with VALID placeholder values (1-6, not 0)
     const result = await pool.query(
       'INSERT INTO rounds (dice1, dice2, dice3, total, result) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-      [1, 1, 1, 3, 'xiu'] // Placeholder values
+      [1, 1, 1, 3, 'xiu'] // ✅ Fixed: Changed from [0,0,0,0,'tai'] to valid values
     );
     
     this.currentRound = result.rows[0].id;
@@ -66,10 +66,10 @@ class GameService {
       // Không có cược nào, roll random
       targetResult = null;
     } else if (shouldPlayerWin) {
-      // Người chơi thắng -> cho kết quả về phía có nhiều cược hơn
+      // Người chơi thắng → cho kết quả về phía có nhiều cược hơn
       targetResult = tai.amount > xiu.amount ? 'tai' : 'xiu';
     } else {
-      // Nhà cái thắng -> cho kết quả về phía có ít cược hơn
+      // Nhà cái thắng → cho kết quả về phía có ít cược hơn
       targetResult = tai.amount > xiu.amount ? 'xiu' : 'tai';
     }
 
