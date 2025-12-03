@@ -1,5 +1,5 @@
 // ============================================
-// components/Game/GameArena.jsx - Container Chính
+// components/Game/GameArena.jsx - CONTAINER CHÍNH (FIXED COMPLETE)
 // ============================================
 import React from 'react';
 import DiceTable from './DiceTable';
@@ -22,12 +22,13 @@ const GameArena = ({
   onAllIn,
   canBet
 }) => {
+  // Loading state - khi chưa có gameState
   if (!gameState) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-dragon-red border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-dragon-gold font-display">Đang kết nối...</p>
+          <p className="text-dragon-gold font-display text-lg md:text-xl">Đang kết nối...</p>
         </div>
       </div>
     );
@@ -37,20 +38,29 @@ const GameArena = ({
     <div className="min-h-screen bg-casino-black relative overflow-hidden">
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-dragon-red/5 via-transparent to-dragon-orange/5"></div>
-      <div className="absolute top-0 left-0 w-96 h-96 bg-dragon-red/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-dragon-orange/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-0 w-64 md:w-96 h-64 md:h-96 bg-dragon-red/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-dragon-orange/10 rounded-full blur-3xl"></div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-2 md:px-4 py-4 md:py-8">
         {/* Top bar - Timer and Round */}
-        <div className="flex justify-between items-center mb-8">
-          <RoundCounter roundNumber={gameState.roundNumber} />
-          <Timer timer={gameState.timer} phase={gameState.phase} />
-          <div className="w-48"></div> {/* Spacer for balance */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4 md:mb-8 gap-2 md:gap-4">
+          {/* Round Counter - Left on desktop, top on mobile */}
+          <div className="order-2 md:order-1">
+            <RoundCounter roundNumber={gameState.roundNumber} />
+          </div>
+          
+          {/* Timer - Center on both */}
+          <div className="order-1 md:order-2">
+            <Timer timer={gameState.timer} phase={gameState.phase} />
+          </div>
+          
+          {/* Spacer for balance on desktop */}
+          <div className="w-32 md:w-48 order-3 hidden md:block"></div>
         </div>
 
         {/* Main game area */}
-        <div className="space-y-8">
+        <div className="space-y-3 md:space-y-8">
           {/* Dice table */}
           <DiceTable
             dice={gameState.dice}
@@ -85,8 +95,8 @@ const GameArena = ({
 
           {/* Current bet info */}
           {myBet && (
-            <div className="text-center bg-dragon-gold/10 border border-dragon-gold rounded-xl px-6 py-3 max-w-md mx-auto">
-              <p className="text-dragon-gold font-display font-bold text-lg">
+            <div className="text-center bg-dragon-gold/10 border border-dragon-gold rounded-lg md:rounded-xl px-4 md:px-6 py-2 md:py-3 max-w-md mx-auto animate-pulse-glow">
+              <p className="text-dragon-gold font-display font-bold text-sm md:text-lg">
                 Đã đặt {myBet.amount.toLocaleString()} vào {myBet.side === 'tai' ? 'TÀI' : 'XỈU'}
               </p>
             </div>
