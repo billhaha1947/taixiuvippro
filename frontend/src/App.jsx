@@ -1,0 +1,175 @@
+// ============================================
+// App.jsx - MAIN APPLICATION
+// ============================================
+import React, { useState, useEffect } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
+
+// Hooks
+import { useAuth } from './hooks/useAuth';
+import { useWebSocket } from './hooks/useWebSocket';
+import { useGame } from './hooks/useGame';
+import { useSound } from './hooks/useSound';
+
+// Components
+import AuthModal from './components/Auth/AuthModal';
+import Header from './components/Layout/Header';
+import UserProfile from './components/Layout/UserProfile';
+import GameArena from './components/Game/GameArena';
+import ChatBox from './components/Chat/ChatBox';
+
+function App() {
+  const { user, login, register, updateUser, isAuthenticated } = useAuth();
+  const { connected } = useWebSocket();
+  const { muted, toggleMute } = useSound();
+  const {
+    gameState,
+    selectedSide,
+    betAmount,
+    myBet,
+    canBet,
+    selectSide,
+    selectAmount,
+    confirmBet,
+    cancelBet,
+    allIn
+  } = useGame();
+
+  const [showChat, setShowChat] = useState(false);
+  const [showAuth, setShowAuth] = useState(!isAuthenticated);
+
+  // Listen for user coin updates
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setShowAuth(true);
+    }
+  }, [isAuthenticated]);
+
+  const handleLogin = async (username, password) => {
+    try {
+      const data = await login(username, password);
+      setShowAuth(false);
+      toast.success(`Chào mừng ${data.user.username}!`);
+    } catch (error) {
+      toast.error(error.toString());
+      throw error;
+    }
+  };
+
+  const handleRegister = async (username, password, email) => {
+    try {
+      const data = await register(username, password, email);
+      setShowAuth(false);
+      toast.success(`Đăng ký thành công! Chào mừng ${data.user.username}!`);
+    } catch (error) {
+      toast.error(error.toString());
+      throw error;
+    }
+  };
+
+  const handleConfirmBet = () => {
+    try {
+      confirmBet();
+      toast.success(`Đã đặt ${betAmount.toLocaleString()} vào ${selectedSide === 'tai' ? 'TÀI' : 'XỈU'}`);
+    } catch (error) {
+      toast.error('Không thể đặt cược: ' + error.toString());
+    }
+  };
+
+  const handleCancelBet = () => {
+    cancelBet();
+    toast.success('Đã hủy cược');
+  };
+
+  const handleAllIn = (coins) => {
+    if (coins <= 0) {
+      toast.error('Bạn không có đủ xu!');
+      return;
+    }
+    allIn(coins);
+    toast.success('Đã chọn tất cả xu!');
+  };
+
+  // Show auth modal if not authenticated
+  if (showAuth) {
+    return (
+      <>
+        <div className="min-h-screen bg-casino-black flex items-center justify-center">
+          <AuthModal
+            onLogin={handleLogin}
+            onRegister={handleRegister}
+            onClose={() => {}} // Can't close without login
+          />
+        </div>
+        <Toaster position="top-center" />
+      </>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-casino-black">
+      {/* Header */}
+      <Header 
+        user={user}
+        onToggleSound={toggleMute}
+        isSoundMuted={muted}
+      />
+
+      {/* User Profile */}
+      <UserProfile user={user} />
+
+      {/* Connection status */}
+      {!connected && (
+        <div className="fixed top-20 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+          ⚠️ Mất kết nối server
+        </div>
+      )}
+
+      {/* Main game area */}
+      <GameArena
+        gameState={gameState}
+        selectedSide={selectedSide}
+        betAmount={betAmount}
+        myBet={myBet}
+        user={user}
+        onSelectSide={selectSide}
+        onSelectAmount={selectAmount}
+        onConfirm={handleConfirmBet}
+        onCancel={handleCancelBet}
+        onAllIn={handleAllIn}
+        canBet={canBet}
+      />
+
+      {/* Chat */}
+      <ChatBox
+        isOpen={showChat}
+        onClose={() => setShowChat(!showChat)}
+      />
+
+      {/* Toast notifications */}
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: '#1a1a1a',
+            color: '#fff',
+            border: '1px solid #ff0000',
+          },
+          success: {
+            iconTheme: {
+              primary: '#ffd700',
+              secondary: '#1a1a1a',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ff0000',
+              secondary: '#1a1a1a',
+            },
+          },
+        }}
+      />
+    </div>
+  );
+}
+
+export default App;
