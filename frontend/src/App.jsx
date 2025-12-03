@@ -16,6 +16,8 @@ import Header from './components/Layout/Header';
 import UserProfile from './components/Layout/UserProfile';
 import GameArena from './components/Game/GameArena';
 import ChatBox from './components/Chat/ChatBox';
+import BetHistoryModal from './components/History/BetHistoryModal';
+import AdminPanel from './components/Admin/AdminPanel';
 
 function App() {
   const { user, login, register, updateUser, isAuthenticated } = useAuth();
@@ -36,6 +38,8 @@ function App() {
 
   const [showChat, setShowChat] = useState(false);
   const [showAuth, setShowAuth] = useState(!isAuthenticated);
+  const [showHistory, setShowHistory] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
 
   // Listen for user coin updates
   useEffect(() => {
@@ -112,6 +116,8 @@ function App() {
         user={user}
         onToggleSound={toggleMute}
         isSoundMuted={muted}
+        onOpenHistory={() => setShowHistory(true)}
+        onOpenAdmin={() => setShowAdmin(true)}
       />
 
       {/* User Profile */}
@@ -143,6 +149,19 @@ function App() {
       <ChatBox
         isOpen={showChat}
         onClose={() => setShowChat(!showChat)}
+      />
+
+      {/* Bet History Modal */}
+      <BetHistoryModal
+        isOpen={showHistory}
+        onClose={() => setShowHistory(false)}
+      />
+
+      {/* Admin Panel */}
+      <AdminPanel
+        isOpen={showAdmin}
+        onClose={() => setShowAdmin(false)}
+        currentUser={user}
       />
 
       {/* Toast notifications */}
