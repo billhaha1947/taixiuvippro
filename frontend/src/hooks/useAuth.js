@@ -1,5 +1,5 @@
 // ============================================
-// hooks/useAuth.js - AUTH HOOK
+// hooks/useAuth.js - AUTH HOOK (FIXED)
 // ============================================
 import { useState, useEffect } from 'react';
 import authService from '../services/authService';
@@ -16,12 +16,17 @@ export const useAuth = () => {
 
   const checkAuth = async () => {
     try {
-      if (authService.isAuthenticated()) {
+      const token = authService.getToken();
+      if (token) {
+        // Fetch user profile from server to verify token
         const profile = await userService.getProfile();
         setUser(profile);
       }
     } catch (err) {
       console.error('Auth check failed:', err);
+      // Token invalid or expired, clear it
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       setError(err);
     } finally {
       setLoading(false);
