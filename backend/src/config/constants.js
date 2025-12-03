@@ -4,17 +4,17 @@
 
 module.exports = {
   GAME_PHASES: {
-    OPEN: 'open',      // 15 seconds - cho đặt cược
-    LOCK: 'lock',      // 5 seconds - khóa cược
-    ROLLING: 'rolling', // 3 seconds - tung xúc sắc
-    RESULT: 'result'   // 2 seconds - hiển thị kết quả
+    OPEN: 'open',      // Đang mở cửa - cho đặt cược
+    LOCK: 'lock',      // Khóa cược - chờ lắc
+    ROLLING: 'rolling', // Đang lắc xúc sắc
+    RESULT: 'result'   // Hiển thị kết quả
   },
   
   TIMERS: {
-    OPEN_DURATION: 15,
-    LOCK_DURATION: 5,
-    ROLLING_DURATION: 3,
-    RESULT_DURATION: 2
+    OPEN_DURATION: 30,      // 30 giây mở cược (thay đổi từ 15)
+    LOCK_DURATION: 10,      // 10 giây khóa cược (thay đổi từ 5)
+    ROLLING_DURATION: 3,    // 3 giây animation xúc sắc
+    RESULT_DURATION: 2      // 2 giây hiển thị kết quả
   },
   
   PAYOUT_RATE: 1, // 1:1 payout
