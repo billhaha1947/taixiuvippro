@@ -35,7 +35,7 @@ class GameService {
     // Create new round in database
     const result = await pool.query(
       'INSERT INTO rounds (dice1, dice2, dice3, total, result) VALUES ($1, $2, $3, $4, $5) RETURNING id',
-      [0, 0, 0, 0, 'tai'] // Placeholder values
+      [1, 1, 1, 3, 'xiu'] // Placeholder values
     );
     
     this.currentRound = result.rows[0].id;
