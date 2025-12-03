@@ -4,7 +4,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useWebSocket } from './useWebSocket';
 import { GAME_PHASES } from '../utils/constants';
-import soundManager from '../utils/soundManager';
 
 export const useGame = () => {
   const { gameState, placeBet: socketPlaceBet, on, off } = useWebSocket();
@@ -18,7 +17,8 @@ export const useGame = () => {
     // Listen for bet confirmation
     const handleBetPlaced = (data) => {
       setMyBet(data.bet);
-      soundManager.play('chip-place');
+      // Visual feedback only
+      console.log('[Game] Bet placed:', data.bet);
     };
 
     // Listen for bet errors
@@ -29,7 +29,7 @@ export const useGame = () => {
 
     // Listen for user updates (coins change)
     const handleUserUpdate = (data) => {
-      // Update user coins in parent component
+      console.log('[Game] User updated:', data);
     };
 
     on('bet_placed', handleBetPlaced);
@@ -48,23 +48,18 @@ export const useGame = () => {
 
     // Handle phase changes
     if (gameState.phase === GAME_PHASES.ROLLING) {
-      soundManager.play('dice-roll');
+      console.log('[Game] Rolling dice...');
     }
 
     if (gameState.phase === GAME_PHASES.RESULT) {
-      soundManager.stop('dice-roll');
-      soundManager.play('dice-slam');
+      console.log('[Game] Result:', gameState.result);
       setLastResult(gameState.result);
 
       // Check if user won
       if (myBet && myBet.side === gameState.result) {
-        setTimeout(() => {
-          soundManager.play('win');
-        }, 500);
+        console.log('[Game] You won!');
       } else if (myBet) {
-        setTimeout(() => {
-          soundManager.play('lose');
-        }, 500);
+        console.log('[Game] You lost!');
       }
     }
 
@@ -75,9 +70,9 @@ export const useGame = () => {
       setBetAmount(0);
     }
 
-    // Play countdown sound when timer is low
+    // Countdown alert when timer is low
     if (gameState.phase === GAME_PHASES.OPEN && gameState.timer === 5) {
-      soundManager.play('countdown');
+      console.log('[Game] 5 seconds left!');
     }
   }, [gameState, myBet]);
 
