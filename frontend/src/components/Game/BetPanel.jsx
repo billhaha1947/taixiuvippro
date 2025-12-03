@@ -1,19 +1,19 @@
 // ============================================
-// components/Game/BetPanel.jsx - TÀI/XIU với Cầu
+// components/Game/BetPanel.jsx - FIXED RESPONSIVE
 // ============================================
 import React from 'react';
 import { formatNumber } from '../../utils/formatters';
 
 const BetPanel = ({ selectedSide, onSelectSide, bets, canBet, myBet }) => {
   return (
-    <div className="flex gap-6 justify-center items-center">
+    <div className="flex gap-4 md:gap-6 justify-center items-center flex-wrap">
       {/* TÀI - Cầu Đen */}
       <div className="relative">
         <button
           onClick={() => canBet && onSelectSide('tai')}
           disabled={!canBet || myBet}
           className={`
-            relative w-48 h-48 rounded-full
+            relative w-32 h-32 md:w-48 md:h-48 rounded-full
             transition-all duration-300 transform
             ${selectedSide === 'tai' ? 'scale-110' : 'scale-100'}
             ${canBet && !myBet ? 'hover:scale-105 cursor-pointer' : 'cursor-not-allowed opacity-70'}
@@ -27,24 +27,24 @@ const BetPanel = ({ selectedSide, onSelectSide, bets, canBet, myBet }) => {
           }}
         >
           {/* Shine effect */}
-          <div className="absolute top-8 left-8 w-16 h-16 bg-white/20 rounded-full blur-xl"></div>
+          <div className="absolute top-6 left-6 md:top-8 md:left-8 w-12 h-12 md:w-16 md:h-16 bg-white/20 rounded-full blur-xl"></div>
           
           {/* TÀI text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-white text-5xl font-display font-bold tracking-wider drop-shadow-2xl">
+            <span className="text-white text-3xl md:text-5xl font-display font-bold tracking-wider drop-shadow-2xl">
               TÀI
             </span>
-            <span className="text-gray-300 text-sm font-semibold mt-2">
+            <span className="text-gray-300 text-xs md:text-sm font-semibold mt-1 md:mt-2">
               ≥ 11
             </span>
           </div>
         </button>
 
         {/* Bet amount display */}
-        <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
-          <div className="bg-black/80 border border-gray-600 rounded-lg px-4 py-2 min-w-[120px]">
+        <div className="absolute -bottom-10 md:-bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+          <div className="bg-black/80 border border-gray-600 rounded-lg px-3 md:px-4 py-1 md:py-2 min-w-[100px] md:min-w-[120px]">
             <p className="text-gray-400 text-xs">Tổng cược</p>
-            <p className="text-white font-display font-bold">
+            <p className="text-white font-display font-bold text-sm md:text-base">
               {formatNumber(bets?.tai?.amount || 0)}
             </p>
             <p className="text-gray-500 text-xs">
@@ -55,7 +55,7 @@ const BetPanel = ({ selectedSide, onSelectSide, bets, canBet, myBet }) => {
       </div>
 
       {/* VS Separator */}
-      <div className="text-dragon-gold text-3xl font-display font-bold animate-pulse-glow">
+      <div className="text-dragon-gold text-2xl md:text-3xl font-display font-bold animate-pulse-glow">
         VS
       </div>
 
@@ -65,7 +65,7 @@ const BetPanel = ({ selectedSide, onSelectSide, bets, canBet, myBet }) => {
           onClick={() => canBet && onSelectSide('xiu')}
           disabled={!canBet || myBet}
           className={`
-            relative w-48 h-48 rounded-full
+            relative w-32 h-32 md:w-48 md:h-48 rounded-full
             transition-all duration-300 transform
             ${selectedSide === 'xiu' ? 'scale-110' : 'scale-100'}
             ${canBet && !myBet ? 'hover:scale-105 cursor-pointer' : 'cursor-not-allowed opacity-70'}
@@ -79,24 +79,24 @@ const BetPanel = ({ selectedSide, onSelectSide, bets, canBet, myBet }) => {
           }}
         >
           {/* Shine effect */}
-          <div className="absolute top-6 left-6 w-20 h-20 bg-white rounded-full blur-2xl opacity-60"></div>
+          <div className="absolute top-4 left-4 md:top-6 md:left-6 w-16 h-16 md:w-20 md:h-20 bg-white rounded-full blur-2xl opacity-60"></div>
           
           {/* XỈU text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-black text-5xl font-display font-bold tracking-wider drop-shadow-lg">
+            <span className="text-black text-3xl md:text-5xl font-display font-bold tracking-wider drop-shadow-lg">
               XỈU
             </span>
-            <span className="text-gray-700 text-sm font-semibold mt-2">
+            <span className="text-gray-700 text-xs md:text-sm font-semibold mt-1 md:mt-2">
               &lt; 11
             </span>
           </div>
         </button>
 
         {/* Bet amount display */}
-        <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
-          <div className="bg-black/80 border border-gray-600 rounded-lg px-4 py-2 min-w-[120px]">
+        <div className="absolute -bottom-10 md:-bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+          <div className="bg-black/80 border border-gray-600 rounded-lg px-3 md:px-4 py-1 md:py-2 min-w-[100px] md:min-w-[120px]">
             <p className="text-gray-400 text-xs">Tổng cược</p>
-            <p className="text-white font-display font-bold">
+            <p className="text-white font-display font-bold text-sm md:text-base">
               {formatNumber(bets?.xiu?.amount || 0)}
             </p>
             <p className="text-gray-500 text-xs">
