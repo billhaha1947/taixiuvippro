@@ -255,3 +255,93 @@ code {
   -ms-user-select: none;
   user-select: none;
 }
+/* ============================================
+   MOBILE RESPONSIVE FIXES
+   ============================================ */
+
+/* Mobile Portrait - Điện thoại dọc */
+@media (max-width: 640px) {
+  .dice-container {
+    transform: scale(0.8);
+  }
+  
+  .game-arena {
+    padding: 0.5rem !important;
+  }
+}
+
+/* Mobile Landscape - Điện thoại ngang */
+@media (max-width: 960px) and (orientation: landscape) {
+  /* Giảm padding tổng thể */
+  .game-arena {
+    padding: 0.5rem !important;
+  }
+  
+  /* Header nhỏ gọn hơn */
+  header {
+    padding: 0.5rem !important;
+  }
+  
+  /* User profile nhỏ hơn */
+  .user-profile-container {
+    top: 60px !important;
+    left: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  /* Dice table compact */
+  .dice-container {
+    transform: scale(0.6);
+    gap: 0.5rem !important;
+  }
+  
+  /* Round counter & Timer nhỏ hơn */
+  .round-counter,
+  .timer-display {
+    transform: scale(0.7);
+  }
+  
+  /* Bet panel - Cầu nhỏ hơn */
+  .bet-ball-container {
+    gap: 1rem !important;
+  }
+  
+  /* Chip selector compact */
+  .chip-selector {
+    padding: 1rem !important;
+  }
+  
+  .chip-grid {
+    gap: 0.5rem !important;
+  }
+  
+  /* Action buttons nhỏ hơn */
+  .action-buttons {
+    gap: 0.5rem !important;
+  }
+  
+  .action-button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  /* Font sizes nhỏ hơn */
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  h2 {
+    font-size: 1rem !important;
+  }
+  
+  h3 {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Tablet Portrait */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .dice-container {
+    transform: scale(0.9);
+  }
+}
