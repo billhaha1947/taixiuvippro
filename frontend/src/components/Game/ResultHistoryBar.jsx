@@ -1,5 +1,5 @@
 // ============================================
-// components/Game/ResultHistoryBar.jsx - LỊCH SỬ KẾT QUẢ HOÀN CHỈNH
+// components/Game/ResultHistoryBar.jsx - RESPONSIVE OPTIMIZED
 // ============================================
 import React, { useState, useEffect } from 'react';
 import { RefreshCw } from 'lucide-react';
@@ -30,7 +30,7 @@ const ResultHistoryBar = () => {
   const loadHistory = async () => {
     try {
       setLoading(true);
-      const data = await gameService.getHistory(10); // Lấy 10 vòng gần nhất
+      const data = await gameService.getHistory(12); // Lấy 10 vòng gần nhất
       // Reverse để mới nhất ở bên phải
       setHistory(data.reverse());
     } catch (error) {
@@ -54,10 +54,10 @@ const ResultHistoryBar = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto mb-3 md:mb-6">
+    <div className="w-full max-w-3xl mx-auto mb-2 md:mb-6">
       <div className="bg-gradient-to-r from-casino-black via-casino-dark to-casino-black border-2 border-dragon-red/30 rounded-lg md:rounded-xl p-2 md:p-4 shadow-neon-red">
         {/* Header */}
-        <div className="flex items-center justify-between mb-2 md:mb-3">
+        <div className="flex items-center justify-between mb-1.5 md:mb-3">
           <h3 className="text-dragon-gold font-display font-bold text-xs md:text-sm">
             LỊCH SỬ 10 VÒNG GẦN NHẤT
           </h3>
@@ -67,12 +67,12 @@ const ResultHistoryBar = () => {
             className="text-gray-400 hover:text-dragon-gold transition p-1 rounded hover:bg-casino-surface disabled:opacity-50"
             title="Làm mới"
           >
-            <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+            <RefreshCw size={14} className={`md:w-4 md:h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
 
         {/* History balls */}
-        <div className="flex gap-1.5 md:gap-2 items-center justify-center flex-wrap min-h-[40px] md:min-h-[48px]">
+        <div className="flex gap-1 md:gap-2 items-center justify-center flex-wrap min-h-[32px] md:min-h-[48px]">
           {loading ? (
             <div className="text-gray-500 text-xs md:text-sm">Đang tải...</div>
           ) : history.length === 0 ? (
@@ -83,13 +83,13 @@ const ResultHistoryBar = () => {
                 key={round.id || index}
                 className="relative group"
               >
-                {/* Ball */}
+                {/* Ball - Thêm history-ball class */}
                 <div
                   className={`
-                    w-8 h-8 md:w-10 md:h-10 rounded-full
+                    history-ball w-6 h-6 md:w-10 md:h-10 rounded-full
                     flex items-center justify-center
                     font-display font-bold text-xs md:text-sm
-                    border-2 shadow-lg
+                    border md:border-2 shadow-lg
                     transition-all duration-200 hover:scale-125 cursor-pointer
                     ${round.result === 'tai'
                       ? 'bg-gradient-to-br from-gray-800 to-black text-white border-gray-600'
@@ -105,8 +105,8 @@ const ResultHistoryBar = () => {
                   {round.result === 'tai' ? 'T' : 'X'}
                 </div>
 
-                {/* Tooltip on hover */}
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20">
+                {/* Tooltip on hover - Hide on mobile */}
+                <div className="hidden md:block absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20">
                   <div className="bg-black/95 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-xl border border-dragon-gold/30">
                     <p className="font-bold text-dragon-gold">Vòng #{round.id}</p>
                     <p className="font-semibold">
@@ -131,16 +131,16 @@ const ResultHistoryBar = () => {
 
         {/* Statistics */}
         {history.length > 0 && (
-          <div className="mt-2 md:mt-3 flex justify-center gap-3 md:gap-4 text-xs border-t border-dragon-red/20 pt-2">
-            <div className="flex items-center gap-1.5">
+          <div className="mt-1.5 md:mt-3 flex justify-center gap-2 md:gap-4 text-xs border-t border-dragon-red/20 pt-1.5 md:pt-2">
+            <div className="flex items-center gap-1 md:gap-1.5">
               <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-br from-gray-800 to-black border border-gray-600 shadow-sm"></div>
               <span className="text-gray-400">TÀI:</span>
               <span className="text-white font-bold font-display">
                 {history.filter(r => r.result === 'tai').length}
               </span>
             </div>
-            <div className="w-px h-4 bg-dragon-red/30"></div>
-            <div className="flex items-center gap-1.5">
+            <div className="w-px h-3 md:h-4 bg-dragon-red/30"></div>
+            <div className="flex items-center gap-1 md:gap-1.5">
               <div className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-br from-white to-gray-100 border border-gray-300 shadow-sm"></div>
               <span className="text-gray-400">XỈU:</span>
               <span className="text-white font-bold font-display">
