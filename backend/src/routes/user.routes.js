@@ -1,5 +1,5 @@
 // ============================================
-// routes/user.routes.js - USER ENDPOINTS (FIXED)
+// routes/user.routes.js - USER ENDPOINTS (SAFE VERSION)
 // ============================================
 const express = require('express');
 const pool = require('../config/database');
@@ -13,23 +13,10 @@ router.use(authMiddleware);
 router.get('/profile', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, username, email, coins, avatar, is_admin, created_at FROM users WHERE id = $1',
-      //                                              ↑ THÊM is_admin
+      'SELECT id, username, email, coins, avatar, created_at FROM users WHERE id = $1',
       [req.user.id]
     );
-    
-    const user = result.rows[0];
-    
-    // Convert is_admin to isAdmin (camelCase for frontend)
-    res.json({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      coins: user.coins,
-      avatar: user.avatar,
-      isAdmin: user.is_admin,  // ← Convert snake_case to camelCase
-      createdAt: user.created_at
-    });
+    res.json(result.rows[0]);
   } catch (error) {
     console.error('Get profile error:', error);
     res.status(500).json({ error: 'Failed to get profile' });
