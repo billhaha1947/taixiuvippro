@@ -1,10 +1,17 @@
 // ============================================
-// components/Layout/Header.jsx
+// components/Layout/Header.jsx - WITH LOGOUT BUTTON
 // ============================================
 import React from 'react';
-import { ArrowLeft, HelpCircle, Settings, Bell, Menu, Volume2, VolumeX, History, Shield } from 'lucide-react';
+import { ArrowLeft, HelpCircle, Settings, Bell, Menu, Volume2, VolumeX, History, Shield, LogOut } from 'lucide-react';
 
-const Header = ({ user, onToggleSound, isSoundMuted, onOpenHistory, onOpenAdmin }) => {
+const Header = ({ user, onToggleSound, isSoundMuted, onOpenHistory, onOpenAdmin, onLogout }) => {
+  
+  const handleLogout = () => {
+    if (window.confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+      onLogout();
+    }
+  };
+
   return (
     <header className="bg-gradient-to-r from-casino-black via-casino-dark to-casino-black border-b-2 border-dragon-red/30 px-4 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -35,6 +42,7 @@ const Header = ({ user, onToggleSound, isSoundMuted, onOpenHistory, onOpenAdmin 
           >
             {isSoundMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
+          
           <button 
             onClick={onOpenHistory}
             className="text-gray-400 hover:text-dragon-gold transition p-2 rounded-lg hover:bg-casino-surface"
@@ -42,6 +50,7 @@ const Header = ({ user, onToggleSound, isSoundMuted, onOpenHistory, onOpenAdmin 
           >
             <History size={20} />
           </button>
+          
           {user?.isAdmin && (
             <button 
               onClick={onOpenAdmin}
@@ -51,13 +60,25 @@ const Header = ({ user, onToggleSound, isSoundMuted, onOpenHistory, onOpenAdmin 
               <Shield size={20} />
             </button>
           )}
+          
           <button className="text-gray-400 hover:text-dragon-red transition p-2 rounded-lg hover:bg-casino-surface relative">
             <Bell size={20} />
             <span className="absolute top-1 right-1 w-2 h-2 bg-dragon-red rounded-full animate-pulse"></span>
           </button>
+          
           <button className="text-gray-400 hover:text-dragon-red transition p-2 rounded-lg hover:bg-casino-surface">
             <Settings size={20} />
           </button>
+
+          {/* ========== LOGOUT BUTTON ========== */}
+          <button 
+            onClick={handleLogout}
+            className="text-gray-400 hover:text-red-500 transition p-2 rounded-lg hover:bg-red-500/10 border border-transparent hover:border-red-500/30"
+            title="Đăng xuất"
+          >
+            <LogOut size={20} />
+          </button>
+          
           <button className="text-gray-400 hover:text-dragon-red transition p-2 rounded-lg hover:bg-casino-surface">
             <Menu size={20} />
           </button>
