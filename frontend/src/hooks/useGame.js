@@ -1,5 +1,5 @@
 // ============================================
-// hooks/useGame.js - GAME HOOK
+// hooks/useGame.js - GAME HOOK HOÀN CHỈNH
 // ============================================
 import { useState, useEffect, useCallback } from 'react';
 import { useWebSocket } from './useWebSocket';
@@ -17,7 +17,6 @@ export const useGame = () => {
     // Listen for bet confirmation
     const handleBetPlaced = (data) => {
       setMyBet(data.bet);
-      // Visual feedback only
       console.log('[Game] Bet placed:', data.bet);
     };
 
@@ -54,6 +53,19 @@ export const useGame = () => {
     if (gameState.phase === GAME_PHASES.RESULT) {
       console.log('[Game] Result:', gameState.result);
       setLastResult(gameState.result);
+
+      // ========== DISPATCH EVENT ĐỂ HISTORY BAR CẬP NHẬT ==========
+      const event = new CustomEvent('newGameResult', {
+        detail: {
+          id: gameState.roundNumber,
+          dice1: gameState.dice[0],
+          dice2: gameState.dice[1],
+          dice3: gameState.dice[2],
+          total: gameState.total,
+          result: gameState.result
+        }
+      });
+      window.dispatchEvent(event);
 
       // Check if user won
       if (myBet && myBet.side === gameState.result) {
