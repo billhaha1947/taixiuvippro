@@ -32,6 +32,8 @@
 
 html {
   scroll-behavior: smooth;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -44,6 +46,8 @@ body {
   background-color: var(--color-casino-black);
   color: white;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100vw;
 }
 
 code {
@@ -255,93 +259,293 @@ code {
   -ms-user-select: none;
   user-select: none;
 }
+
 /* ============================================
-   MOBILE RESPONSIVE FIXES
+   MOBILE RESPONSIVE - VỪA KHÍT MÀN HÌNH
    ============================================ */
 
-/* Mobile Portrait - Điện thoại dọc */
+/* Mobile Portrait - Điện thoại dọc (< 640px) */
 @media (max-width: 640px) {
-  .dice-container {
-    transform: scale(0.8);
+  /* Scale everything down */
+  .game-arena {
+    padding: 0.25rem !important;
   }
   
-  .game-arena {
-    padding: 0.5rem !important;
-  }
-}
-
-/* Mobile Landscape - Điện thoại ngang */
-@media (max-width: 960px) and (orientation: landscape) {
-  /* Giảm padding tổng thể */
-  .game-arena {
-    padding: 0.5rem !important;
-  }
-  
-  /* Header nhỏ gọn hơn */
+  /* Header compact */
   header {
     padding: 0.5rem !important;
   }
   
-  /* User profile nhỏ hơn */
+  header h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  header p {
+    font-size: 0.75rem !important;
+  }
+  
+  /* User profile smaller */
   .user-profile-container {
-    top: 60px !important;
-    left: 0.5rem !important;
+    top: 55px !important;
+    left: 0.25rem !important;
     padding: 0.5rem !important;
+    transform: scale(0.85);
+    transform-origin: top left;
   }
   
   /* Dice table compact */
   .dice-container {
-    transform: scale(0.6);
+    transform: scale(0.65);
     gap: 0.5rem !important;
   }
   
-  /* Round counter & Timer nhỏ hơn */
+  /* Round counter & Timer smaller */
   .round-counter,
   .timer-display {
-    transform: scale(0.7);
+    transform: scale(0.75);
+  }
+  
+  /* History bar compact */
+  .history-bar-container {
+    margin-bottom: 0.5rem !important;
   }
   
   /* Bet panel - Cầu nhỏ hơn */
   .bet-ball-container {
     gap: 1rem !important;
+    padding: 0.5rem 0 !important;
   }
   
   /* Chip selector compact */
   .chip-selector {
-    padding: 1rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  .chip-selector h3 {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
   }
   
   .chip-grid {
     gap: 0.5rem !important;
   }
   
-  /* Action buttons nhỏ hơn */
+  /* Action buttons smaller */
   .action-buttons {
     gap: 0.5rem !important;
   }
   
   .action-button {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .action-button svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  /* My bet info smaller */
+  .my-bet-info {
     padding: 0.5rem 1rem !important;
-    font-size: 0.875rem !important;
-  }
-  
-  /* Font sizes nhỏ hơn */
-  h1 {
-    font-size: 1.25rem !important;
-  }
-  
-  h2 {
-    font-size: 1rem !important;
-  }
-  
-  h3 {
-    font-size: 0.875rem !important;
+    font-size: 0.75rem !important;
   }
 }
 
-/* Tablet Portrait */
+/* Mobile Landscape - Điện thoại ngang (< 960px landscape) */
+@media (max-width: 960px) and (orientation: landscape) {
+  /* Giảm tất cả padding */
+  .game-arena {
+    padding: 0.25rem !important;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  
+  /* Header ultra compact */
+  header {
+    padding: 0.25rem 0.5rem !important;
+  }
+  
+  header h1 {
+    font-size: 1rem !important;
+  }
+  
+  header p {
+    display: none !important;
+  }
+  
+  header button {
+    padding: 0.25rem !important;
+  }
+  
+  header svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  /* User profile mini */
+  .user-profile-container {
+    top: 45px !important;
+    left: 0.25rem !important;
+    padding: 0.25rem !important;
+    transform: scale(0.7);
+    transform-origin: top left;
+  }
+  
+  /* Top bar inline */
+  .top-bar-container {
+    margin-bottom: 0.25rem !important;
+    gap: 0.5rem !important;
+  }
+  
+  .round-counter,
+  .timer-display {
+    transform: scale(0.6);
+  }
+  
+  /* Dice ultra compact */
+  .dice-container {
+    transform: scale(0.5);
+    gap: 0.25rem !important;
+  }
+  
+  .dice-total-display {
+    margin-top: 0.5rem !important;
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  /* History bar mini */
+  .history-bar-container {
+    margin-bottom: 0.25rem !important;
+    padding: 0.25rem !important;
+  }
+  
+  .history-bar-container h3 {
+    font-size: 0.625rem !important;
+  }
+  
+  .history-ball {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.625rem !important;
+  }
+  
+  /* Bet panel mini */
+  .bet-ball-container {
+    gap: 0.5rem !important;
+    padding: 0.25rem 0 !important;
+  }
+  
+  .bet-ball-wrapper button {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 1.25rem !important;
+  }
+  
+  .bet-ball-wrapper .bet-amount-display {
+    bottom: -32px !important;
+    font-size: 0.625rem !important;
+    padding: 0.125rem 0.25rem !important;
+    min-width: 80px !important;
+  }
+  
+  /* Chip selector mini */
+  .chip-selector {
+    padding: 0.25rem !important;
+  }
+  
+  .chip-selector h3 {
+    font-size: 0.625rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  
+  .chip-grid {
+    gap: 0.25rem !important;
+  }
+  
+  .chip-button {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.625rem !important;
+    border-width: 2px !important;
+  }
+  
+  /* Action buttons mini */
+  .action-buttons {
+    gap: 0.25rem !important;
+  }
+  
+  .action-button {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.625rem !important;
+  }
+  
+  .action-button svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  
+  /* My bet info mini */
+  .my-bet-info {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.625rem !important;
+  }
+  
+  /* Space reduction */
+  .space-y-3 > * + *,
+  .space-y-6 > * + *,
+  .space-y-8 > * + * {
+    margin-top: 0.25rem !important;
+  }
+  
+  /* Font sizes giảm toàn bộ */
+  h1 {
+    font-size: 1rem !important;
+  }
+  
+  h2 {
+    font-size: 0.875rem !important;
+  }
+  
+  h3 {
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Tablet Portrait (641px - 1024px) */
 @media (min-width: 641px) and (max-width: 1024px) {
   .dice-container {
-    transform: scale(0.9);
+    transform: scale(0.85);
+  }
+  
+  .bet-ball-wrapper button {
+    width: 140px !important;
+    height: 140px !important;
+  }
+}
+
+/* Ultra small devices (< 360px width) */
+@media (max-width: 360px) {
+  .game-arena {
+    padding: 0.125rem !important;
+  }
+  
+  .dice-container {
+    transform: scale(0.55);
+  }
+  
+  .bet-ball-wrapper button {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  
+  .chip-button {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  header h1 {
+    font-size: 1rem !important;
   }
 }
