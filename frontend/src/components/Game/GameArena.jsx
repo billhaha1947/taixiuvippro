@@ -1,5 +1,5 @@
 // ============================================
-// components/Game/GameArena.jsx - CONTAINER CHÍNH (FIXED COMPLETE)
+// components/Game/GameArena.jsx - HOÀN CHỈNH VỚI HISTORY BAR
 // ============================================
 import React from 'react';
 import DiceTable from './DiceTable';
@@ -8,6 +8,7 @@ import ChipSelector from './ChipSelector';
 import ActionButtons from './ActionButtons';
 import Timer from './Timer';
 import RoundCounter from './RoundCounter';
+import ResultHistoryBar from './ResultHistoryBar';
 
 const GameArena = ({ 
   gameState,
@@ -60,7 +61,7 @@ const GameArena = ({
         </div>
 
         {/* Main game area */}
-        <div className="space-y-3 md:space-y-8">
+        <div className="space-y-3 md:space-y-6">
           {/* Dice table */}
           <DiceTable
             dice={gameState.dice}
@@ -68,6 +69,9 @@ const GameArena = ({
             total={gameState.total}
             result={gameState.result}
           />
+
+          {/* ========== HISTORY BAR - ĐÚNG VỊ TRÍ NHƯ HÌNH ========== */}
+          <ResultHistoryBar />
 
           {/* Bet panel with black/white balls */}
           <BetPanel
