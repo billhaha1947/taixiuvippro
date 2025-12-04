@@ -1,5 +1,5 @@
 // ============================================
-// components/Game/ChipSelector.jsx - FIXED RESPONSIVE
+// components/Game/ChipSelector.jsx - RESPONSIVE OPTIMIZED
 // ============================================
 import React from 'react';
 import { CHIP_VALUES } from '../../utils/constants';
@@ -20,11 +20,11 @@ const Chip = ({ value, label, selected, onClick }) => {
     <button
       onClick={onClick}
       className={`
-        relative w-12 h-12 md:w-20 md:h-20 rounded-full
+        chip-button relative w-10 h-10 md:w-20 md:h-20 rounded-full
         bg-gradient-to-br ${getChipColor(value)}
         border-2 md:border-4 shadow-xl
         transform transition-all duration-200
-        ${selected ? 'scale-110 shadow-2xl ring-2 md:ring-4 ring-dragon-gold' : 'hover:scale-105'}
+        ${selected ? 'scale-110 ring-2 md:ring-4 ring-dragon-gold' : 'hover:scale-105 active:scale-95'}
         flex items-center justify-center
       `}
       style={{
@@ -42,19 +42,19 @@ const Chip = ({ value, label, selected, onClick }) => {
       </span>
 
       {/* Shine effect */}
-      <div className="absolute top-1 left-1 md:top-2 md:left-2 w-4 h-4 md:w-6 md:h-6 bg-white/40 rounded-full blur-md"></div>
+      <div className="absolute top-1 left-1 md:top-2 md:left-2 w-3 h-3 md:w-6 md:h-6 bg-white/40 rounded-full blur-md"></div>
     </button>
   );
 };
 
 const ChipSelector = ({ selectedAmount, onSelectAmount }) => {
   return (
-    <div className="bg-gradient-to-r from-casino-black via-casino-dark to-casino-black border-2 border-dragon-red/30 rounded-xl md:rounded-2xl p-3 md:p-6 shadow-neon-red">
-      <h3 className="text-dragon-gold font-display font-bold text-center mb-2 md:mb-4 text-sm md:text-lg">
+    <div className="bg-gradient-to-r from-casino-black via-casino-dark to-casino-black border-2 border-dragon-red/30 rounded-lg md:rounded-2xl p-2 md:p-6 shadow-neon-red">
+      <h3 className="text-dragon-gold font-display font-bold text-center mb-1 md:mb-4 text-xs md:text-lg">
         CHỌN MỨC CƯỢC
       </h3>
       
-      <div className="chip-grid flex flex-wrap gap-2 md:gap-3 justify-center items-center">
+      <div className="chip-grid flex flex-wrap gap-1.5 md:gap-3 justify-center items-center">
         {CHIP_VALUES.map((chip) => (
           <Chip
             key={chip.value}
@@ -68,9 +68,9 @@ const ChipSelector = ({ selectedAmount, onSelectAmount }) => {
 
       {/* Current selection */}
       {selectedAmount > 0 && (
-        <div className="mt-3 md:mt-4 text-center">
+        <div className="mt-2 md:mt-4 text-center">
           <p className="text-gray-400 text-xs md:text-sm">Đã chọn:</p>
-          <p className="text-dragon-gold font-display font-bold text-lg md:text-2xl">
+          <p className="text-dragon-gold font-display font-bold text-base md:text-2xl">
             {selectedAmount.toLocaleString()}
           </p>
         </div>
