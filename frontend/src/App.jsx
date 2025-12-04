@@ -131,20 +131,18 @@ function App() {
 
   return (
     <div className="min-h-screen bg-casino-black">
-      {/* Header */}
+      {/* Header - PASS onLogout */}
       <Header 
         user={user}
         onToggleSound={toggleMute}
         isSoundMuted={muted}
         onOpenHistory={() => setShowHistory(true)}
         onOpenAdmin={() => setShowAdmin(true)}
-      />
-
-      {/* User Profile - PASS LOGOUT HANDLER */}
-      <UserProfile 
-        user={user} 
         onLogout={handleLogout}
       />
+
+      {/* User Profile - SIMPLE (No onLogout prop needed) */}
+      <UserProfile user={user} />
 
       {/* Connection status */}
       {!connected && (
