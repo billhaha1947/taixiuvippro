@@ -1,5 +1,5 @@
 // ============================================
-// routes/user.routes.js - USER ENDPOINTS
+// routes/user.routes.js - USER ENDPOINTS (FIXED)
 // ============================================
 const express = require('express');
 const pool = require('../config/database');
@@ -13,11 +13,25 @@ router.use(authMiddleware);
 router.get('/profile', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, username, email, coins, avatar, created_at FROM users WHERE id = $1',
+      'SELECT id, username, email, coins, avatar, is_admin, created_at FROM users WHERE id = $1',
+      //                                              ↑ THÊM is_admin
       [req.user.id]
     );
-    res.json(result.rows[0]);
+    
+    const user = result.rows[0];
+    
+    // Convert is_admin to isAdmin (camelCase for frontend)
+    res.json({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      coins: user.coins,
+      avatar: user.avatar,
+      isAdmin: user.is_admin,  // ← Convert snake_case to camelCase
+      createdAt: user.created_at
+    });
   } catch (error) {
+    console.error('Get profile error:', error);
     res.status(500).json({ error: 'Failed to get profile' });
   }
 });
@@ -32,6 +46,7 @@ router.post('/avatar', async (req, res) => {
     );
     res.json({ message: 'Avatar updated', avatar });
   } catch (error) {
+    console.error('Update avatar error:', error);
     res.status(500).json({ error: 'Failed to update avatar' });
   }
 });
