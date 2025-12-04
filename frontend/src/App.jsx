@@ -1,5 +1,5 @@
 // ============================================
-// App.jsx - MAIN APPLICATION (FIXED)
+// App.jsx - MAIN APPLICATION WITH LOGOUT
 // ============================================
 import React, { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
@@ -20,7 +20,7 @@ import BetHistoryModal from './components/History/BetHistoryModal';
 import AdminPanel from './components/Admin/AdminPanel';
 
 function App() {
-  const { user, loading, login, register, updateUser, isAuthenticated } = useAuth();
+  const { user, loading, login, register, logout, updateUser, isAuthenticated } = useAuth();
   const { connected } = useWebSocket();
   const { muted, toggleMute } = useSound();
   const {
@@ -70,6 +70,12 @@ function App() {
       toast.error(error.toString());
       throw error;
     }
+  };
+
+  // ========== LOGOUT HANDLER ==========
+  const handleLogout = () => {
+    logout();
+    toast.success('Đã đăng xuất thành công!');
   };
 
   const handleConfirmBet = () => {
@@ -134,8 +140,11 @@ function App() {
         onOpenAdmin={() => setShowAdmin(true)}
       />
 
-      {/* User Profile */}
-      <UserProfile user={user} />
+      {/* User Profile - PASS LOGOUT HANDLER */}
+      <UserProfile 
+        user={user} 
+        onLogout={handleLogout}
+      />
 
       {/* Connection status */}
       {!connected && (
