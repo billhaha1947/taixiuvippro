@@ -1,5 +1,5 @@
 // ============================================
-// routes/auth.routes.js - AUTH ENDPOINTS (FIXED)
+// routes/auth.routes.js - AUTH ENDPOINTS (SAFE VERSION)
 // ============================================
 const express = require('express');
 const bcrypt = require('bcryptjs');
@@ -38,13 +38,12 @@ router.post('/register', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const result = await pool.query(
-      'INSERT INTO users (username, password_hash, email) VALUES ($1, $2, $3) RETURNING id, username, email, coins, avatar, is_admin',
-      //                                                                                                                  ↑ THÊM is_admin
+      'INSERT INTO users (username, password_hash, email) VALUES ($1, $2, $3) RETURNING id, username, email, coins, avatar',
       [username, passwordHash, email || null]
     );
 
     const user = result.rows[0];
-    const token = generateToken({ userId: user.id, isAdmin: user.is_admin });
+    const token = generateToken({ userId: user.id });
 
     res.json({
       user: {
@@ -52,8 +51,7 @@ router.post('/register', async (req, res) => {
         username: user.username,
         email: user.email,
         coins: user.coins,
-        avatar: user.avatar,
-        isAdmin: user.is_admin  // ← THÊM isAdmin
+        avatar: user.avatar
       },
       token
     });
@@ -88,13 +86,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Update last_login
-    await pool.query(
-      'UPDATE users SET last_login = NOW() WHERE id = $1',
-      [user.id]
-    );
-
-    const token = generateToken({ userId: user.id, isAdmin: user.is_admin });
+    const token = generateToken({ userId: user.id });
 
     res.json({
       user: {
@@ -102,8 +94,7 @@ router.post('/login', async (req, res) => {
         username: user.username,
         email: user.email,
         coins: user.coins,
-        avatar: user.avatar,
-        isAdmin: user.is_admin  // ✅ Đã có sẵn
+        avatar: user.avatar
       },
       token
     });
