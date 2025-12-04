@@ -1,5 +1,5 @@
 // ============================================
-// services/authService.js - AUTH API SERVICE
+// services/authService.js - FIXED WITH isAdmin
 // ============================================
 import api from './api';
 
@@ -11,6 +11,10 @@ const authService = {
    */
   register: async (data) => {
     const response = await api.post('/api/auth/register', data);
+    // Save user to localStorage
+    if (response.data.user) {
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+    }
     return response.data;
   },
 
@@ -21,6 +25,10 @@ const authService = {
    */
   login: async (data) => {
     const response = await api.post('/api/auth/login', data);
+    // Save user to localStorage (including isAdmin)
+    if (response.data.user) {
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+    }
     return response.data;
   },
 
@@ -35,15 +43,20 @@ const authService = {
   },
 
   /**
-   * Get current user from token
+   * Get current user from localStorage
    * @returns {Object|null} User object or null
    */
   getCurrentUser: () => {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
-
     try {
-      // Decode JWT (simple decode, not verification)
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        return JSON.parse(userStr);
+      }
+      
+      // Fallback: Try to decode from token
+      const token = localStorage.getItem('token');
+      if (!token) return null;
+
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = decodeURIComponent(
@@ -54,7 +67,7 @@ const authService = {
       );
       return JSON.parse(jsonPayload);
     } catch (error) {
-      console.error('Failed to decode token:', error);
+      console.error('Failed to get current user:', error);
       return null;
     }
   },
@@ -90,6 +103,18 @@ const authService = {
    */
   getToken: () => {
     return localStorage.getItem('token');
+  },
+
+  /**
+   * Update user in localStorage
+   * @param {Object} userData - Updated user data
+   */
+  updateStoredUser: (userData) => {
+    const currentUser = authService.getCurrentUser();
+    if (currentUser) {
+      const updatedUser = { ...currentUser, ...userData };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
   }
 };
 
