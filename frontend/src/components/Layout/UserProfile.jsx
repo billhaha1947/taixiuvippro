@@ -9,8 +9,6 @@ const UserProfile = ({ user, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  if (!user) return null;
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -27,6 +25,9 @@ const UserProfile = ({ user, onLogout }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
+
+  // EARLY RETURN PHẢI Ở SAU TẤT CẢ HOOKS
+  if (!user) return null;
 
   // Generate avatar với CSS
   const getAvatarColor = (username) => {
