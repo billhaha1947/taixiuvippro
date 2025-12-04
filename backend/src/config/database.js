@@ -1,5 +1,5 @@
 // ============================================
-// config/database.js - POSTGRESQL CONNECTION
+// config/database.js - POSTGRESQL CONNECTION (SAFE VERSION)
 // ============================================
 const { Pool } = require('pg');
 
@@ -28,7 +28,6 @@ const initDatabase = async () => {
         email VARCHAR(100) UNIQUE,
         coins BIGINT DEFAULT 10000,
         avatar VARCHAR(255) DEFAULT '/avatars/default.png',
-        is_admin BOOLEAN DEFAULT FALSE,
         banned BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
